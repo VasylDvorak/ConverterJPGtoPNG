@@ -38,6 +38,7 @@ class ConverterFromJpgToPng(val context: Context) {
 
 
 val rxJavaSingleSource = Single.just(tempConvertedFile.toUri())
+    .delay(3000L, TimeUnit.MILLISECONDS)
             return rxJavaSingleSource
         }
         return Single.error(Throwable())

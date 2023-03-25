@@ -55,7 +55,7 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
             }
             buttonConvertJpgPng.setOnClickListener {
                 URIpicture?.let(presenter::startConvertingJPGtoPNG)
-                showCancelDialog()
+
             }
         }
     }
@@ -104,7 +104,7 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
 
     override fun waitting() {
         binding.imgViewConvertedImg.setImageURI(null)
-        Thread.sleep(2000L)
+
     }
 
     private fun initialStateOfView() {
@@ -144,10 +144,6 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
     }
 
     override fun hideCancelDialog() {
-        alertDialog.apply {
-            cancel()
-            hide()
-            dismiss()
-        }
+        alertDialog.cancel()
     }
 }

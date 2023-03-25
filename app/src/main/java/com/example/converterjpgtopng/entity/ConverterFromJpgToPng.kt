@@ -14,7 +14,7 @@ import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 /**
- * Класс Конвертер файлов изображений из jpg d png
+ * Класс Конвертирует файл изображения из jpg в png
  *
  */
 
@@ -38,6 +38,7 @@ class ConverterFromJpgToPng(val context: Context) {
 
 
 val rxJavaSingleSource = Single.just(tempConvertedFile.toUri())
+    .delay(3000L, TimeUnit.MILLISECONDS)
             return rxJavaSingleSource
         }
         return Single.error(Throwable())

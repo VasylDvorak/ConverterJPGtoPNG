@@ -4,7 +4,7 @@ import android.net.Uri
 import com.example.converterjpgtopng.entity.ConverterFromJpgToPng
 import com.example.converterjpgtopng.ui.interfaces.MVPInterfaceForConverter
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -13,7 +13,9 @@ import moxy.MvpPresenter
 
 class ConverterPresenter(
     private val converter: ConverterFromJpgToPng,
-    val router: Router
+    private val router: Router,
+    private val androidSchedulers: Scheduler,
+    private val computation: Scheduler
 ) : MvpPresenter<MVPInterfaceForConverter>() {
 
     var disposables = CompositeDisposable()
@@ -41,8 +43,8 @@ class ConverterPresenter(
 
         converter
             .convertRx(pictureUri)
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(computation)
+            .observeOn(androidSchedulers)
             .subscribe(object : SingleObserver<Uri> {
                 override fun onSubscribe(d: Disposable?) {
                     disposables.add(d)
@@ -50,6 +52,7 @@ class ConverterPresenter(
 
                 override fun onSuccess(t: Uri?) {
                     if (t != null) {
+
                         SuccessConverting(t)
                     }
                 }

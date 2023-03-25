@@ -17,8 +17,11 @@ import com.example.converterjpgtopng.databinding.FragmentConverterBinding
 import com.example.converterjpgtopng.entity.ConverterFromJpgToPng
 import com.example.converterjpgtopng.ui.interfaces.BackButtonListener
 import com.example.converterjpgtopng.ui.interfaces.MVPInterfaceForConverter
+
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConverter,
     BackButtonListener {
@@ -27,10 +30,14 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
     private val binding get() = _binding!!
     private lateinit var alertDialog: AlertDialog
     private var URIpicture: Uri? = null
+
+
     private val presenter: ConverterPresenter by moxyPresenter {
         ConverterPresenter(
             ConverterFromJpgToPng(requireContext()),
-            App.instance.router
+            App.instance.router,
+            AndroidSchedulers.mainThread(),
+            Schedulers.computation()
         )
     }
 
@@ -55,7 +62,7 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
             }
             buttonConvertJpgPng.setOnClickListener {
                 URIpicture?.let(presenter::startConvertingJPGtoPNG)
-                showCancelDialog()
+
             }
         }
     }
@@ -104,7 +111,7 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
 
     override fun waitting() {
         binding.imgViewConvertedImg.setImageURI(null)
-        Thread.sleep(2000L)
+
     }
 
     private fun initialStateOfView() {
@@ -144,10 +151,6 @@ class ConverterFragmentJPGtoPNG : MvpAppCompatFragment(), MVPInterfaceForConvert
     }
 
     override fun hideCancelDialog() {
-        alertDialog.apply {
-            cancel()
-            hide()
-            dismiss()
-        }
+        alertDialog.cancel()
     }
 }

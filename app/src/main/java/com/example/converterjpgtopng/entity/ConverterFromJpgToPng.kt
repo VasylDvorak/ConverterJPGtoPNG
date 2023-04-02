@@ -23,6 +23,7 @@ class ConverterFromJpgToPng(val context: Context) {
         uri?.let {
             val tempConvertedFile = File.createTempFile("tmpConvert", ".png", )
 
+
             val fileOutputStream = FileOutputStream(tempConvertedFile)
             val bufferOutputStream = BufferedOutputStream(fileOutputStream)
             val imageDecoder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
